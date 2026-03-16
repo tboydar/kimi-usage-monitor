@@ -5,6 +5,41 @@
   <b>美麗的即時終端監控工具，用於監控 Kimi AI 使用量</b>
 </p>
 
+---
+
+## 🎯 API Support / API 支援狀況
+
+> ⚠️ **Please read this carefully before using!**
+> ⚠️ **使用前請仔細閱讀！**
+
+### ✅ Supported / 支援
+
+| API / 接口 | Endpoint | Usage Query / 使用量查詢 | Note |
+|-----------|----------|-------------------------|------|
+| **Moonshot API** | `api.moonshot.cn` | ✅ **YES** | Requires `MOONSHOT_API_KEY` / 需要 `MOONSHOT_API_KEY` |
+| **Moonshot Global** | `api.moonshot.ai` | ✅ **YES** | International endpoint / 國際端點 |
+
+### ❌ Not Supported / 不支援
+
+| API / 接口 | Endpoint | Usage Query / 使用量查詢 | Note |
+|-----------|----------|-------------------------|------|
+| **Kimi Code API** | `api.kimi.com/coding/v1` | ❌ **NO** | OAuth token from `kimi-cli` cannot access usage endpoints / `kimi-cli` 的 OAuth token 無法存取使用量端點 |
+
+### Quick Check / 快速檢查
+
+```bash
+# If you use kimi-cli OAuth / 如果使用 kimi-cli OAuth
+kimi-monitor
+# → Will show "Kimi Code API does not support usage queries"
+
+# If you use Moonshot API Key / 如果使用 Moonshot API Key
+export MOONSHOT_API_KEY="sk-..."
+kimi-monitor
+# → Will show usage statistics ✓
+```
+
+---
+
 <p align="center">
   <a href="https://github.com/tboydar/kimi-usage-monitor">
     <img src="https://img.shields.io/badge/python-3.9+-blue.svg" alt="Python 3.9+">
