@@ -68,6 +68,30 @@ Press Ctrl+C to exit | Auto-refresh: 10s
 
 ---
 
+## ⚠️ Important Note / 重要說明
+
+### Kimi Code API Limitation / Kimi Code API 限制
+
+**Kimi CLI Usage Monitor** uses OAuth authentication from `kimi-cli`, which connects to the **Kimi Code API** (`api.kimi.com/coding/v1`).
+
+**Kimi CLI Usage Monitor** 使用 `kimi-cli` 的 OAuth 認證，連接到 **Kimi Code API** (`api.kimi.com/coding/v1`)。
+
+> ⚠️ **Kimi Code API does NOT provide usage/balance endpoints.**  
+> ⚠️ **Kimi Code API 不提供使用量/餘額查詢端點。**
+
+This is a limitation of the Kimi Code platform, not this tool. OAuth tokens cannot access usage data.
+
+這是 Kimi Code 平台的限制，不是本工具的問題。OAuth token 無法存取使用量資料。
+
+### To View Your Usage / 查看使用量方式
+
+| Method / 方式 | URL | Description |
+|--------------|-----|-------------|
+| Web Console / 網頁控制台 | https://platform.moonshot.cn/console/account | View balance & usage / 查看餘額與使用 |
+| API Key / API 金鑰 | Set `MOONSHOT_API_KEY` | Use Moonshot API directly / 直接使用 Moonshot API |
+
+---
+
 ## 🚀 Installation / 安裝
 
 ### Using pip / 使用 pip
