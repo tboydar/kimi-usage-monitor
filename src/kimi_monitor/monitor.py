@@ -43,6 +43,9 @@ class KimiMonitor:
         """Handle shutdown signals."""
         logger.info("Received shutdown signal")
         self._running = False
+        # 立即退出 / Exit immediately
+        import sys
+        sys.exit(0)
     
     def _should_fetch_daily(self) -> bool:
         """Check if daily data should be fetched."""
@@ -112,15 +115,18 @@ class KimiMonitor:
         usage = self.api.get_usage()
         if usage.total_quota == 0 and self.api.provider == "kimicode":
             self.ui.print_warning("Kimi Code API does not support usage queries / Kimi Code API 不支援使用查詢")
-            self.ui.print_info("This is a known limitation / 這是已知限制")
-            self.ui.print_info("You can still use kimi-cli normally / 你仍可以正常使用 kimi-cli")
+            self.ui.print_info("OAuth tokens cannot access usage endpoints / OAuth token 無法存取使用量端點")
+            self.ui.print_info("\nTo see your usage:")
+            self.ui.print_info("  1. Visit https://platform.moonshot.cn/console/account")
+            self.ui.print_info("  2. Or use Moonshot API Key instead of kimi-cli OAuth")
+            self.ui.print_info("\n你仍可以正常使用 kimi-cli / You can still use kimi-cli normally")
             
             # 顯示可用資訊 / Show available info
-            self.ui.print_info("\n📊 Available Information / 可用資訊:")
+            self.ui.print_info("\n📊 Connection Info / 連線資訊:")
             self.ui.print_info(f"  Provider: {self.api.provider}")
             self.ui.print_info(f"  Base URL: {self.api.base_url}")
             if self.api.api_key:
-                self.ui.print_info(f"  API Key: {self.api.api_key[:20]}...{self.api.api_key[-4:]}")
+                self.ui.print_info(f"  Auth: OAuth (kimi-cli)")
             
             # 顯示模型資訊 / Show model info
             try:
@@ -136,12 +142,14 @@ class KimiMonitor:
                 sys.exit(0)
             else:
                 self.ui.print_info("\nPress Ctrl+C to exit / 按 Ctrl+C 退出")
+                self._running = True
                 try:
-                    import time
-                    while True:
-                        time.sleep(1)
+                    while self._running:
+                        import time
+                        time.sleep(0.1)
                 except KeyboardInterrupt:
-                    pass
+                    self._running = False
+                self.ui.print_info("\nExiting... / 退出中...")
                 sys.exit(0)
         
         # Initial data fetch

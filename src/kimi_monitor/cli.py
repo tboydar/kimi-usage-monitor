@@ -267,6 +267,9 @@ def main(
                 sys.exit(1)
         else:
             monitor.run(once=once)
+    except KeyboardInterrupt:
+        click.echo("\n👋 Goodbye! / 再見！")
+        sys.exit(0)
     except Exception as e:
         logging.exception("Monitor failed")
         click.echo(f"❌ Error: {e}", err=True)
