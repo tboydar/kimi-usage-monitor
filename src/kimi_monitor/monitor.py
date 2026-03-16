@@ -11,6 +11,7 @@ from pathlib import Path
 from .api import KimiAPI, KimiAPIError
 from .models import UsageData, Config, DailyUsage
 from .ui import KimiUI
+from .kimicli_auth import KimiCLIAuth
 
 logger = logging.getLogger(__name__)
 
@@ -80,9 +81,18 @@ class KimiMonitor:
     
     def run(self) -> None:
         """Run the monitor."""
+        # 顯示 kimi-cli 狀態 / Show kimi-cli status
+        if KimiCLIAuth.is_installed():
+            self.ui.print_info("Detected kimi-cli installation / 檢測到 kimi-cli 安裝")
+            if KimiCLIAuth.is_authenticated():
+                self.ui.print_success("Using kimi-cli authentication / 使用 kimi-cli 認證")
+            else:
+                self.ui.print_warning("kimi-cli not authenticated / kimi-cli 未認證")
+        
         # Check API key
         if not self.api.api_key:
             self.ui.print_error("No API key found. Please set KIMI_API_KEY environment variable.")
+            self.ui.print_info("Or login with: kimi login / 或使用 kimi login 登入")
             self.ui.print_info("Get your API key from: https://platform.moonshot.cn")
             sys.exit(1)
         

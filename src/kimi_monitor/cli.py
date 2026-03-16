@@ -11,6 +11,7 @@ import click
 
 from .models import Config
 from .monitor import KimiMonitor
+from .kimicli_auth import KimiCLIAuth
 
 
 # Default config file location
@@ -140,6 +141,11 @@ def clear_config() -> None:
     is_flag=True,
     help="Show version information",
 )
+@click.option(
+    "--check-kimicli",
+    is_flag=True,
+    help="Check kimi-cli status / 檢查 kimi-cli 狀態",
+)
 def main(
     plan: str,
     custom_limit: Optional[int],
@@ -158,6 +164,7 @@ def main(
     once: bool,
     clear: bool,
     version: bool,
+    check_kimicli: bool,
 ):
     """Kimi Usage Monitor - Real-time terminal monitoring for Kimi AI usage.
     
@@ -184,6 +191,10 @@ def main(
     if version:
         from . import __version__
         click.echo(f"kimi-monitor version {__version__}")
+        sys.exit(0)
+    
+    if check_kimicli:
+        KimiCLIAuth.print_status()
         sys.exit(0)
     
     if clear:

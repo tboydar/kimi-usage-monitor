@@ -10,6 +10,7 @@ from pathlib import Path
 import requests
 
 from .models import UsageData, SessionData, DailyUsage, MonthlyUsage
+from .kimicli_auth import KimiCLIAuth
 
 logger = logging.getLogger(__name__)
 
@@ -35,12 +36,30 @@ class KimiAPI:
     ):
         """Initialize API client.
         
+        初始化 API 客戶端。會自動檢測本機 kimi-cli 認證資訊。
+        
         Args:
-            api_key: API key (defaults to KIMI_API_KEY env var)
+            api_key: API key (defaults to KIMI_API_KEY env var or kimi-cli auth)
             base_url: API base URL
             provider: Provider type (moonshot, moonshot-global, kimicode)
         """
-        self.api_key = api_key or os.environ.get("KIMI_API_KEY") or os.environ.get("MOONSHOT_API_KEY")
+        # 優先順序 / Priority:
+        # 1. 傳入的 api_key / Passed api_key
+        # 2. 環境變數 / Environment variable
+        # 3. kimi-cli 認證 / kimi-cli authentication
+        self.api_key = (
+            api_key 
+            or os.environ.get("KIMI_API_KEY") 
+            or os.environ.get("MOONSHOT_API_KEY")
+            or KimiCLIAuth.get_api_key()  # 自動檢測 kimi-cli / Auto-detect kimi-cli
+        )
+        
+        # 如果從 kimi-cli 取得認證，使用其設定 / If auth from kimi-cli, use its config
+        if not api_key and not os.environ.get("KIMI_API_KEY"):
+            kimicli_config = KimiCLIAuth.get_config()
+            if kimicli_config.get("base_url"):
+                provider = "kimicode"  # kimi-cli 使用 kimicode provider
+        
         self.provider = provider
         
         if base_url:
