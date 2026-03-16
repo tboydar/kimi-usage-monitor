@@ -257,11 +257,16 @@ def main(
         if once:
             usage = monitor.run_once()
             if usage:
+                # Check if usage is empty (Kimi Code API limitation)
+                if usage.total_quota == 0 and monitor.api.provider == "kimicode":
+                    click.echo("⚠️  Kimi Code API does not support usage queries / Kimi Code API 不支援使用查詢")
+                    click.echo("ℹ️  You can still use kimi-cli normally / 你仍可以正常使用 kimi-cli")
+                    sys.exit(0)
                 monitor.print_summary(usage)
             else:
                 sys.exit(1)
         else:
-            monitor.run()
+            monitor.run(once=once)
     except Exception as e:
         logging.exception("Monitor failed")
         click.echo(f"❌ Error: {e}", err=True)

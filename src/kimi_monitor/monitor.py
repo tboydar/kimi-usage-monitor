@@ -79,8 +79,12 @@ class KimiMonitor:
         layout = self.ui.create_main_layout(usage, self._daily_data)
         self.ui.update_live(layout)
     
-    def run(self) -> None:
-        """Run the monitor."""
+    def run(self, once: bool = False) -> None:
+        """Run the monitor.
+        
+        Args:
+            once: Run once and exit / 執行一次後退出
+        """
         # 顯示 kimi-cli 狀態 / Show kimi-cli status
         if KimiCLIAuth.is_installed():
             self.ui.print_info("Detected kimi-cli installation / 檢測到 kimi-cli 安裝")

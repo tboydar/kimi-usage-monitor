@@ -53,11 +53,12 @@ class KimiAPI:
         
         # 檢查 kimi-cli 認證 / Check kimi-cli auth
         kimicli_api_key = KimiCLIAuth.get_api_key()
+        is_kimicli_auth = not api_key and not env_api_key and kimicli_api_key
         
         self.api_key = api_key or env_api_key or kimicli_api_key
         
         # 如果從 kimi-cli 取得認證，使用其設定 / If auth from kimi-cli, use its config
-        if not api_key and not env_api_key and kimicli_api_key:
+        if is_kimicli_auth:
             logger.info("Using kimicode provider for kimi-cli authentication")
             provider = "kimicode"  # kimi-cli 使用 kimicode provider
         
