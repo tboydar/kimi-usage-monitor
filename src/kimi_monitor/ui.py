@@ -177,7 +177,7 @@ class KimiUI:
             title="📊 Usage Statistics",
             box=None,
             show_header=True,
-            header_style="bold primary",
+            header_style="bold blue",
         )
         
         table.add_column("Metric", style="dim")
@@ -300,7 +300,7 @@ class KimiUI:
             title="📅 Daily Usage (Last 7 Days)",
             box=None,
             show_header=True,
-            header_style="bold primary",
+            header_style="bold blue",
         )
         
         table.add_column("Date", style="dim")

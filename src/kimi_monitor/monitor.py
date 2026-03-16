@@ -104,6 +104,42 @@ class KimiMonitor:
         
         self.ui.print_success("Connected to Kimi API!")
         
+        # 檢查是否支援使用量查詢 / Check if usage query is supported
+        usage = self.api.get_usage()
+        if usage.total_quota == 0 and self.api.provider == "kimicode":
+            self.ui.print_warning("Kimi Code API does not support usage queries / Kimi Code API 不支援使用查詢")
+            self.ui.print_info("This is a known limitation / 這是已知限制")
+            self.ui.print_info("You can still use kimi-cli normally / 你仍可以正常使用 kimi-cli")
+            
+            # 顯示可用資訊 / Show available info
+            self.ui.print_info("\n📊 Available Information / 可用資訊:")
+            self.ui.print_info(f"  Provider: {self.api.provider}")
+            self.ui.print_info(f"  Base URL: {self.api.base_url}")
+            if self.api.api_key:
+                self.ui.print_info(f"  API Key: {self.api.api_key[:20]}...{self.api.api_key[-4:]}")
+            
+            # 顯示模型資訊 / Show model info
+            try:
+                models = self.api.get_models()
+                if models:
+                    self.ui.print_info(f"\n  Available Models / 可用模型:")
+                    for model in models:
+                        self.ui.print_info(f"    - {model.get('display_name', model.get('id', 'Unknown'))}")
+            except:
+                pass
+            
+            if once:
+                sys.exit(0)
+            else:
+                self.ui.print_info("\nPress Ctrl+C to exit / 按 Ctrl+C 退出")
+                try:
+                    import time
+                    while True:
+                        time.sleep(1)
+                except KeyboardInterrupt:
+                    pass
+                sys.exit(0)
+        
         # Initial data fetch
         usage = self._fetch_data()
         if not usage:
