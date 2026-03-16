@@ -6,7 +6,37 @@ A beautiful real-time terminal monitoring tool for Kimi AI usage with advanced a
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-![Demo](docs/demo.png)
+```
+🌙 Kimi Usage Monitor
+══════════════════════════════════════════════════
+Last updated: 2024-03-16 15:30:00
+══════════════════════════════════════════════════
+
+Token Usage
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  24.0%
+                                            3.8M remaining
+
+📊 Usage Statistics
+Metric          Value         Percentage
+─────────────────────────────────────────
+Total Quota     5.0M          100%
+Used            1.2M          24.0%
+Remaining       3.8M          76.0%
+Today's Usage   125K
+This Week       890K
+Total Cost      $0.50
+
+📋 Plan Information
+┌─────────────────────────────────────┐
+│ Plan: PRO                           │
+│ Expires: 2024-04-15 (30 days left)  │
+│ Reset: Daily                        │
+└─────────────────────────────────────┘
+
+══════════════════════════════════════════════════
+Press Ctrl+C to exit | Auto-refresh: 10s
+══════════════════════════════════════════════════
+```
 
 ## ✨ Features
 
