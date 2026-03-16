@@ -18,7 +18,7 @@ class KimiCLIAuth:
     
     # kimi-cli 配置路徑 / kimi-cli config paths
     KIMI_CONFIG_DIR = Path.home() / ".kimi"
-    CREDENTIALS_DIR = KIMI_CONFIG_DIR / "credentials" / "oauth"
+    CREDENTIALS_DIR = KIMI_CONFIG_DIR / "credentials"
     
     @classmethod
     def is_installed(cls) -> bool:
