@@ -37,9 +37,16 @@ class TestUsageData:
     
     def test_days_until_expiry(self):
         """Test days until expiry calculation."""
-        future = datetime.now(timezone.utc) + timedelta(days=30)
+        # Use fixed datetime to avoid timezone issues
+        fixed_now = datetime(2026, 3, 15, 12, 0, 0, tzinfo=timezone.utc)
+        future = fixed_now + timedelta(days=30)
         usage = UsageData(expires_at=future)
-        assert usage.days_until_expiry == 30
+        
+        # Patch datetime.now to return fixed time
+        with patch('kimi_monitor.models.datetime') as mock_datetime:
+            mock_datetime.now.return_value = fixed_now
+            mock_datetime.__sub__ = datetime.__sub__
+            assert usage.days_until_expiry == 30
     
     def test_days_until_expiry_none(self):
         """Test days until expiry when expires_at is None."""
