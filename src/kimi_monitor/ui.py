@@ -184,6 +184,22 @@ class KimiUI:
         table.add_column("Value", justify="right")
         table.add_column("Percentage", justify="right")
         
+        # Check if we have valid data / 檢查是否有有效資料
+        if usage.total_quota == 0:
+            table.add_row(
+                "Status",
+                "No usage data available / 無可用使用資料",
+                "",
+                style="warning",
+            )
+            table.add_row(
+                "Note",
+                "API may not support usage query / API 可能不支援使用查詢",
+                "",
+                style="dim",
+            )
+            return table
+        
         # Total quota
         table.add_row(
             "Total Quota",

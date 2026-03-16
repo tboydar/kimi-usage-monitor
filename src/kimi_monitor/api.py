@@ -47,18 +47,19 @@ class KimiAPI:
         # 1. 傳入的 api_key / Passed api_key
         # 2. 環境變數 / Environment variable
         # 3. kimi-cli 認證 / kimi-cli authentication
-        self.api_key = (
-            api_key 
-            or os.environ.get("KIMI_API_KEY") 
-            or os.environ.get("MOONSHOT_API_KEY")
-            or KimiCLIAuth.get_api_key()  # 自動檢測 kimi-cli / Auto-detect kimi-cli
-        )
+        
+        # 檢查是否有環境變數 / Check environment variables first
+        env_api_key = os.environ.get("KIMI_API_KEY") or os.environ.get("MOONSHOT_API_KEY")
+        
+        # 檢查 kimi-cli 認證 / Check kimi-cli auth
+        kimicli_api_key = KimiCLIAuth.get_api_key()
+        
+        self.api_key = api_key or env_api_key or kimicli_api_key
         
         # 如果從 kimi-cli 取得認證，使用其設定 / If auth from kimi-cli, use its config
-        if not api_key and not os.environ.get("KIMI_API_KEY"):
-            kimicli_config = KimiCLIAuth.get_config()
-            if kimicli_config.get("base_url"):
-                provider = "kimicode"  # kimi-cli 使用 kimicode provider
+        if not api_key and not env_api_key and kimicli_api_key:
+            logger.info("Using kimicode provider for kimi-cli authentication")
+            provider = "kimicode"  # kimi-cli 使用 kimicode provider
         
         self.provider = provider
         
