@@ -53,7 +53,11 @@ class KimiAPI:
         
         # 檢查 kimi-cli 認證 / Check kimi-cli auth
         kimicli_api_key = KimiCLIAuth.get_api_key()
-        is_kimicli_auth = not api_key and not env_api_key and kimicli_api_key
+        
+        # 判斷是否使用 kimi-cli 認證 / Determine if using kimi-cli auth
+        # OAuth tokens from kimi-cli are JWT format (start with "eyJ")
+        is_oauth_token = api_key and api_key.startswith("eyJ") if api_key else False
+        is_kimicli_auth = (not api_key and not env_api_key and kimicli_api_key) or is_oauth_token
         
         self.api_key = api_key or env_api_key or kimicli_api_key
         
@@ -61,6 +65,7 @@ class KimiAPI:
         if is_kimicli_auth:
             logger.info("Using kimicode provider for kimi-cli authentication")
             provider = "kimicode"  # kimi-cli 使用 kimicode provider
+            base_url = None  # 強制使用 kimicode 預設 URL / Force use kimicode default URL
         
         self.provider = provider
         
