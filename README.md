@@ -23,7 +23,7 @@
 
 | API / 接口 | Endpoint | Usage Query / 使用量查詢 | Note |
 |-----------|----------|-------------------------|------|
-| **Kimi Code API** | `api.kimi.com/coding/v1` | ❌ **NO** | OAuth token from `kimi-cli` cannot access usage endpoints / `kimi-cli` 的 OAuth token 無法存取使用量端點 |
+| **Kimi Code API** | `api.kimi.com/coding/v1` | ❌ **NO** | The endpoint does not exist on this host (`/users/me` → 404 with an API key too, verified 2026-09-06) / 這個 host 沒有用量端點（用 API key 打 `/users/me` 也是 404，2026-09-06 實測），與憑證型別無關 |
 
 ### Quick Check / 快速檢查
 
@@ -114,9 +114,9 @@ Press Ctrl+C to exit | Auto-refresh: 10s
 > ⚠️ **Kimi Code API does NOT provide usage/balance endpoints.**  
 > ⚠️ **Kimi Code API 不提供使用量/餘額查詢端點。**
 
-This is a limitation of the Kimi Code platform, not this tool. OAuth tokens cannot access usage data.
+This is a limitation of the Kimi Code platform, not this tool. The usage endpoints simply do not exist on `api.kimi.com/coding/v1` — an `sk-kimi-` API key authenticates fine (`/v1/models` → 200) yet `/users/me` and `/user/balance` both return 404. It is not a token-type problem, so switching credentials will not help; the only route to usage visibility for this API is client-side accounting.
 
-這是 Kimi Code 平台的限制，不是本工具的問題。OAuth token 無法存取使用量資料。
+這是 Kimi Code 平台的限制，不是本工具的問題。`api.kimi.com/coding/v1` 上**根本沒有用量端點**——用 `sk-kimi-` API key 可以正常認證（`/v1/models` 回 200），但 `/users/me` 與 `/user/balance` 都回 404。這不是 token 型別的問題，換憑證也沒用；這個 API 的用量可見度只能靠本機記帳。
 
 ### To View Your Usage / 查看使用量方式
 
